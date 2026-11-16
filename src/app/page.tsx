@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ThemeToggle } from "@/components/theme-toggle";
-import { experience, getPublications, intro, interests, navigation, news, profile, profileLinks } from "@/data/site";
+import { experienceGroups, getPublications, intro, interests, navigation, news, profile, profileLinks } from "@/data/site";
 
 type IconName =
   | "mail"
@@ -296,16 +296,23 @@ export default function Home() {
             </section>
 
             <section id="experience" className="content-section scroll-mt-24">
-              <SectionHeading kicker="Experience" title="Research Experience" />
-              <div className="list-block">
-                {experience.map((item) => (
-                  <article key={`${item.date}-${item.title}`} className="list-row">
-                    <p className="list-date">{item.date}</p>
-                    <div>
-                      <h3 className="experience-title">{item.title}</h3>
-                      <p className="list-text">{item.text}</p>
+              <SectionHeading kicker="Experience" title="Industry, Education, and Research" />
+              <div className="experience-groups">
+                {experienceGroups.map((group) => (
+                  <div key={group.title} className="experience-group">
+                    <h3 className="experience-group-title">{group.title}</h3>
+                    <div className="list-block">
+                      {group.items.map((item) => (
+                        <article key={`${item.date}-${item.title}`} className="list-row">
+                          <p className="list-date">{item.date}</p>
+                          <div>
+                            <h4 className="experience-title">{item.title}</h4>
+                            <p className="list-text">{item.text}</p>
+                          </div>
+                        </article>
+                      ))}
                     </div>
-                  </article>
+                  </div>
                 ))}
               </div>
             </section>

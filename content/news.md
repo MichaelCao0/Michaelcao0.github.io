@@ -1,5 +1,5 @@
+- 2026-01 | 🎊 3 papers were accepted to ICLR 2026.
+- 2026-05 | 🏆 1 paper was accepted to ICML 2026; T2AV-Compass was also selected for CVPR 2026 VGBE Oral.
+- 2026-08 | 🎊 2 papers were accepted to EMNLP 2026.
+- 2026-09 | 🚀 1 paper was accepted to NeurIPS 2026.
 - 2026-11 | 📚 Co-authored *From Prediction to Control: A Survey of Closed-Loop World Models for Robot Learning*.
-- 2026 | 🎊 3 papers were accepted to ICLR 2026.
-- 2026 | 🎊 2 papers were accepted to EMNLP 2026.
-- 2026 | 🏆 1 paper was accepted to ICML 2026; T2AV-Compass was also selected for CVPR 2026 VGBE Oral.
-- 2026 | 🚀 1 paper was accepted to NeurIPS 2026.

@@ -31,6 +31,11 @@ type Experience = {
   text: string;
 };
 
+type ExperienceGroup = {
+  title: string;
+  items: Experience[];
+};
+
 function readContent(file: string) {
   return fs.readFileSync(path.join(process.cwd(), "content", file), "utf8");
 }
@@ -151,8 +156,16 @@ export function getPublications(): Publication[] {
   return parsePublications(readContent("publications.md")).sort((left, right) => right.date.localeCompare(left.date));
 }
 
-export const experience: Experience[] = parsePipeList(experienceMarkdown).map(([date, title, text]) => ({
-  date,
-  title,
-  text,
-}));
+export const experienceGroups: ExperienceGroup[] = experienceMarkdown
+  .split(/^## /m)
+  .slice(1)
+  .map((block) => {
+    const [title = "", ...body] = block.trim().split("\n");
+    const items = parsePipeList(body.join("\n")).map(([date, itemTitle, text]) => ({
+      date,
+      title: itemTitle,
+      text,
+    }));
+
+    return { title: title.trim(), items };
+  });

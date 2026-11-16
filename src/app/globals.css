@@ -502,6 +502,23 @@ button {
     color: var(--ink);
   }
 
+  .experience-groups {
+    display: grid;
+    gap: 1.7rem;
+  }
+
+  .experience-group {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .experience-group-title {
+    font-family: var(--font-serif), serif;
+    font-size: 1.08rem;
+    font-weight: 650;
+    color: var(--ink-strong);
+  }
+
   .publication-stack {
     display: grid;
     border-top: 1px solid var(--line-strong);

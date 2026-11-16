@@ -181,19 +181,6 @@ export default function Home() {
       <main className="site-shell">
         <div className="academic-layout">
           <aside className="sidebar-column">
-            <div className="portrait-card">
-              <div className="portrait-shell">
-                <Image
-                  src="/avatar-main.jpg"
-                  alt={`Portrait of ${profile.name}`}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 34vw, 208px"
-                  className="object-cover object-center"
-                />
-              </div>
-            </div>
-
             <div className="profile-block">
               <h1 className="profile-name">{profile.name}</h1>
               <p className="profile-role">

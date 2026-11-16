@@ -312,23 +312,6 @@ button {
     align-content: start;
   }
 
-  .portrait-card {
-    width: min(100%, 13rem);
-    padding: 0;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    background: var(--panel);
-    box-shadow: 0 18px 45px -36px var(--shadow);
-  }
-
-  .portrait-shell {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 4 / 5;
-    border-radius: 3px;
-    background: var(--panel-muted);
-  }
-
   .profile-block {
     display: grid;
     gap: 0.45rem;
@@ -751,10 +734,6 @@ button {
   .topbar-nav {
     justify-content: flex-start;
     margin-left: 0;
-  }
-
-  .portrait-card {
-    width: 10.5rem;
   }
 
   .content-column {

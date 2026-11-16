@@ -1,6 +1,6 @@
-- 2026-5 | 🎊 T2AV-Compass is accepted by ICML 2026 Poster.
-- 2026-4 | ✨ T2AV-Compass is accepted by CVPR 2026 VGBE Oral(Short Papers).
-- 2026-4 | 📷 Join Insta360.
-- 2026-1 | ✨ Two papers on model evaluation are accepted by ICLR 2026 Poster.
-- 2026-1 | 📷 Join Agibot.
-- 2025-9 | 📷 Intern at THUNLP.
+- 2026-11 | 📚 Co-authored *From Prediction to Control: A Survey of Closed-Loop World Models for Robot Learning*.
+- 2026-10 | 📈 Google Scholar profile reached 236 citations.
+- 2026-8 | 🎊 AVSCap was accepted to EMNLP 2026 Main Conference.
+- 2026-6 | 🎊 Frontier-Eng was accepted to NeurIPS 2026.
+- 2026-5 | 🎊 T2AV-Compass was accepted to ICML 2026.
+- 2026-4 | ✨ T2AV-Compass was selected for CVPR 2026 VGBE Oral.

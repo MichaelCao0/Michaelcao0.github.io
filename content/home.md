@@ -2,13 +2,13 @@
 
 affiliation: Nanjing University
 role: Undergraduate Student
-line: LLM, MLLM, Robot Learning and their evaluation.
+line: Multimodal AI, agents, world models, and reliable ML systems.
 
 ## Preface
 
 eyebrow: Personal academic homepage
-title: Towards AGI.
-text: I work on post-training, multimodal, and AI Infra.
+title: Building models that perceive, reason, and act.
+text: I work on multimodal learning, evaluation, post-training, and the systems that make AI research reliable.
 
 ## Links
 
@@ -18,14 +18,12 @@ text: I work on post-training, multimodal, and AI Infra.
 
 ## About
 
-I am an undergraduate student at Nanjing University.
+I am an undergraduate student at Nanjing University. My work focuses on multimodal models, evaluation, agents, world models, and machine learning infrastructure.
 
 ## Research Interests
 
-
-- Post-training
-- Multimodal learning
-- Model Evaluation
-- World models for Robotic Manipulation
-- Model Quantization
-- RL Infra
+- Multimodal learning and audio-visual intelligence
+- Benchmarking and evaluation for generative and omni-modal models
+- Agents, world models, and robot learning
+- Post-training, reinforcement learning, and model systems
+- Reliable inference and reproducible research infrastructure

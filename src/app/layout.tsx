@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Zhe Cao",
+  title: "Zhe Cao · Multimodal AI and Agents",
   description:
-    "Personal academic homepage for Zhe Cao, featuring research in LLMs, MLLMs, robot learning, evaluation, model quantization, and AI infrastructure.",
+    "Personal academic homepage for Zhe Cao at Nanjing University, featuring research in multimodal AI, agents, world models, evaluation, and reliable ML systems.",
 };
 
 export default function RootLayout({

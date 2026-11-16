@@ -1,4 +1,5 @@
 - 2026-11 | 📚 Co-authored *From Prediction to Control: A Survey of Closed-Loop World Models for Robot Learning*.
-- 2026 | 🎊 Selected papers were accepted to ICLR 2026, ICML 2026, NeurIPS 2026, and EMNLP 2026.
-- 2026-05 | 🏆 T2AV-Compass was accepted to ICML 2026 and selected for CVPR 2026 VGBE Oral.
-- 2026-04 | 🎊 OmniVideoBench and SafeDialBench were accepted to ICLR 2026.
+- 2026 | 🎊 3 papers were accepted to ICLR 2026.
+- 2026 | 🎊 2 papers were accepted to EMNLP 2026.
+- 2026 | 🏆 1 paper was accepted to ICML 2026; T2AV-Compass was also selected for CVPR 2026 VGBE Oral.
+- 2026 | 🚀 1 paper was accepted to NeurIPS 2026.

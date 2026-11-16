@@ -15,6 +15,7 @@ type PublicationLink = {
 
 type Publication = {
   title: string;
+  date: string;
   meta: string;
   authors: string;
   note: string;
@@ -105,6 +106,7 @@ function parsePublications(markdown: string): Publication[] {
 
       return {
         title: title.trim(),
+        date: fields.date ?? "",
         meta: fields.meta ?? "",
         authors: fields.authors ?? "",
         note: fields.note ?? "",
@@ -146,7 +148,7 @@ export const interests = parseSimpleList(getSection(homeMarkdown, "Research Inte
 export const news = parsePipeList(newsMarkdown).map(([date, text]) => ({ date, text }));
 
 export function getPublications(): Publication[] {
-  return parsePublications(readContent("publications.md"));
+  return parsePublications(readContent("publications.md")).sort((left, right) => right.date.localeCompare(left.date));
 }
 
 export const experience: Experience[] = parsePipeList(experienceMarkdown).map(([date, title, text]) => ({

@@ -104,14 +104,38 @@ function getVenueTone(label: string) {
 
 function AuthorList({ authors }: { authors: string }) {
   const name = profile.name;
-  const parts = authors.split(name);
+  const names = authors
+    .split(",")
+    .map((author) => author.trim())
+    .filter(Boolean);
+  const isLongList = names.length > 8;
+  const firstAuthors = isLongList ? names.slice(0, 3) : names;
+  const hasProfileAuthor = names.some((author) => author.startsWith(name));
+  const profileAuthor = names.find((author) => author.startsWith(name));
+  const trailingEllipsis = isLongList && (hasProfileAuthor ? names.indexOf(profileAuthor ?? "") < names.length - 1 : true);
+  const displayAuthors = isLongList
+    ? [
+        ...firstAuthors,
+        ...(profileAuthor && !firstAuthors.some((author) => author.startsWith(name)) ? ["…", profileAuthor] : []),
+        ...(trailingEllipsis ? ["…"] : []),
+      ]
+    : firstAuthors;
 
   return (
     <>
-      {parts.map((part, index) => (
-        <span key={`${part}-${index}`}>
-          {part}
-          {index < parts.length - 1 ? <strong>{name}</strong> : null}
+      {displayAuthors.map((author, index) => (
+        <span key={`${author}-${index}`}>
+          {author === "…" ? (
+            author
+          ) : author.startsWith(name) ? (
+            <>
+              <strong>{name}</strong>
+              {author.slice(name.length)}
+            </>
+          ) : (
+            author
+          )}
+          {index < displayAuthors.length - 1 ? ", " : null}
         </span>
       ))}
     </>

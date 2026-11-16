@@ -459,23 +459,23 @@ button {
   }
 
   .interest-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.48rem;
     margin-top: 0.05rem;
   }
 
   .interest-item {
-    display: inline-flex;
-    align-items: center;
-    min-height: 1.85rem;
+    display: flex;
+    align-items: flex-start;
+    min-height: 4.2rem;
     border: 1px solid var(--line);
-    border-radius: 999px;
+    border-radius: 4px;
     background: color-mix(in srgb, var(--panel) 78%, transparent);
-    padding: 0.28rem 0.72rem;
+    padding: 0.68rem 0.72rem;
     color: var(--ink);
     font-size: 0.82rem;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   .list-block {
@@ -765,6 +765,10 @@ button {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.28rem;
+  }
+
+  .interest-list {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .publication-card {

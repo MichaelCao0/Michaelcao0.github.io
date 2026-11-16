@@ -9,6 +9,7 @@ type IconName =
   | "file"
   | "github"
   | "scholar"
+  | "linkedin"
   | "openreview"
   | "huggingface"
   | "xiaohongshu";
@@ -64,6 +65,13 @@ function LinkIcon({ name }: { name: IconName }) {
           <path d="M7 11.5V15c0 1.7 2.2 3 5 3s5-1.3 5-3v-3.5" stroke="currentColor" strokeLinecap="round" />
         </svg>
       );
+    case "linkedin":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
+          <rect x="4.5" y="4.5" width="15" height="15" rx="2" stroke="currentColor" />
+          <path d="M8 10.5v5M8 8.2v.1M11.5 15.5v-2.6a2.1 2.1 0 0 1 4.2 0v2.6M11.5 11v4.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
     case "openreview":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={common} aria-hidden="true">
@@ -112,12 +120,11 @@ function AuthorList({ authors }: { authors: string }) {
   const firstAuthors = isLongList ? names.slice(0, 3) : names;
   const hasProfileAuthor = names.some((author) => author.startsWith(name));
   const profileAuthor = names.find((author) => author.startsWith(name));
-  const trailingEllipsis = isLongList && (hasProfileAuthor ? names.indexOf(profileAuthor ?? "") < names.length - 1 : true);
   const displayAuthors = isLongList
     ? [
         ...firstAuthors,
         ...(profileAuthor && !firstAuthors.some((author) => author.startsWith(name)) ? ["…", profileAuthor] : []),
-        ...(trailingEllipsis ? ["…"] : []),
+        ...(!hasProfileAuthor ? ["…"] : []),
       ]
     : firstAuthors;
 

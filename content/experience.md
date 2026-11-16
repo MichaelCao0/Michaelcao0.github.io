@@ -1,3 +1,3 @@
-- 2026.4 - now    | Research Intern, Insta360
+- 2026.4 - 2026.7 | Research Intern, Insta360
 - 2026.1 - 2026.4 | Intern, Agibot
 - 2023.9 - 2027.6 | Undergraduate, School of Computer Science, Nanjing University.

@@ -131,6 +131,7 @@ export const navigation = [
   { label: "News", href: "#news" },
   { label: "Publications", href: "#publications" },
   { label: "Experience", href: "#experience" },
+  { label: "Visitors", href: "#visitors" },
 ];
 
 export const profile = {

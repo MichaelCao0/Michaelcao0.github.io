@@ -682,6 +682,21 @@ button {
     line-height: 1.4;
     color: var(--ink-strong);
   }
+
+  .visitor-map-shell {
+    display: flex;
+    min-height: 180px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--panel-muted);
+  }
+
+  .visitor-map-shell > * {
+    max-width: 100%;
+  }
 }
 
 @media (min-width: 900px) {

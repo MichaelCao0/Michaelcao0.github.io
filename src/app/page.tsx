@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { experienceGroups, getPublications, intro, interests, navigation, news, profile, profileLinks } from "@/data/site";
@@ -319,6 +320,17 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </section>
+
+            <section id="visitors" className="content-section scroll-mt-24">
+              <SectionHeading kicker="Visitors" title="Visitor Map" />
+              <div className="visitor-map-shell">
+                <Script
+                  id="mapmyvisitors"
+                  src="https://mapmyvisitors.com/map.js?d=IpOmOWxy0-p38X7mgCkXV16LIhDdgDn3uNLOmqsC4CM&cl=ffffff&w=a"
+                  strategy="afterInteractive"
+                />
               </div>
             </section>
           </div>

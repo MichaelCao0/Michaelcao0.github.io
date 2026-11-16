@@ -16,6 +16,7 @@ type PublicationLink = {
 type Publication = {
   title: string;
   date: string;
+  status: "accepted" | "preprint";
   meta: string;
   authors: string;
   note: string;
@@ -112,6 +113,7 @@ function parsePublications(markdown: string): Publication[] {
       return {
         title: title.trim(),
         date: fields.date ?? "",
+        status: fields.status === "accepted" ? "accepted" : "preprint",
         meta: fields.meta ?? "",
         authors: fields.authors ?? "",
         note: fields.note ?? "",

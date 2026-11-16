@@ -144,6 +144,10 @@ function AuthorList({ authors }: { authors: string }) {
 
 export default function Home() {
   const publications = getPublications();
+  const publicationGroups = [
+    { title: "Accepted Papers", items: publications.filter((item) => item.status === "accepted") },
+    { title: "Preprints", items: publications.filter((item) => item.status === "preprint") },
+  ];
 
   return (
     <div className="site-page">
@@ -242,56 +246,63 @@ export default function Home() {
 
             <section id="publications" className="content-section scroll-mt-24">
               <SectionHeading kicker="Selected Publications" title="Papers and Projects" />
-              <div className="publication-stack">
-                {publications.map((item) => {
-                  const venue = item.meta || (item.links.some((link) => link.label.toLowerCase().includes("arxiv")) ? "arXiv" : "");
+              <div className="publication-groups">
+                {publicationGroups.map((group) => (
+                  <div key={group.title} className="publication-group">
+                    <h3 className="publication-group-title">{group.title}</h3>
+                    <div className="publication-stack">
+                      {group.items.map((item) => {
+                        const venue = item.meta || (item.links.some((link) => link.label.toLowerCase().includes("arxiv")) ? "arXiv" : "");
 
-                  return (
-                    <article key={item.title} className="publication-card">
-                      <div className="publication-cover">
-                        {item.image ? (
-                          <Image
-                          src={item.image}
-                          alt={`${item.title} cover`}
-                          fill
-                          sizes="(max-width: 1024px) 120px, 140px"
-                          className={item.imageFit === "contain" ? "object-contain p-2" : "object-cover object-center"}
-                        />
-                      ) : (
-                        <div className="publication-fallback">
-                          <span>{item.imageLabel}</span>
-                        </div>
-                      )}
+                        return (
+                          <article key={item.title} className="publication-card">
+                            <div className="publication-cover">
+                              {item.image ? (
+                                <Image
+                                  src={item.image}
+                                  alt={`${item.title} cover`}
+                                  fill
+                                  sizes="(max-width: 1024px) 120px, 140px"
+                                  className={item.imageFit === "contain" ? "object-contain p-2" : "object-cover object-center"}
+                                />
+                              ) : (
+                                <div className="publication-fallback">
+                                  <span>{item.imageLabel}</span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="publication-body">
+                              <h2 className="publication-title">{item.title}</h2>
+                              {item.authors ? (
+                                <p className="publication-authors">
+                                  <AuthorList authors={item.authors} />
+                                </p>
+                              ) : null}
+                              {item.note ? <p className="publication-note">{item.note}</p> : null}
+                              {venue || item.links.length ? (
+                                <div className="publication-links">
+                                  {venue ? <span className={`publication-venue publication-venue--${getVenueTone(venue)}`}>{venue}</span> : null}
+                                  {item.links.map((link) => (
+                                    <a
+                                      key={link.label}
+                                      href={link.href}
+                                      target={link.href.startsWith("http") && link.href !== "#" ? "_blank" : undefined}
+                                      rel={link.href.startsWith("http") && link.href !== "#" ? "noreferrer" : undefined}
+                                      className={`publication-link ${link.href === "#" ? "is-disabled" : ""}`}
+                                      aria-disabled={link.href === "#"}
+                                    >
+                                      {link.label}
+                                    </a>
+                                  ))}
+                                </div>
+                              ) : null}
+                            </div>
+                          </article>
+                        );
+                      })}
                     </div>
-                    <div className="publication-body">
-                      <h2 className="publication-title">{item.title}</h2>
-                      {item.authors ? (
-                        <p className="publication-authors">
-                          <AuthorList authors={item.authors} />
-                        </p>
-                      ) : null}
-                      {item.note ? <p className="publication-note">{item.note}</p> : null}
-                      {venue || item.links.length ? (
-                        <div className="publication-links">
-                          {venue ? <span className={`publication-venue publication-venue--${getVenueTone(venue)}`}>{venue}</span> : null}
-                          {item.links.map((link) => (
-                            <a
-                              key={link.label}
-                              href={link.href}
-                              target={link.href.startsWith("http") && link.href !== "#" ? "_blank" : undefined}
-                              rel={link.href.startsWith("http") && link.href !== "#" ? "noreferrer" : undefined}
-                              className={`publication-link ${link.href === "#" ? "is-disabled" : ""}`}
-                              aria-disabled={link.href === "#"}
-                            >
-                              {link.label}
-                            </a>
-                          ))}
-                        </div>
-                        ) : null}
-                      </div>
-                    </article>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </section>
 

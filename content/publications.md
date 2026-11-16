@@ -1,6 +1,7 @@
 ## From Prediction to Control: A Survey of Closed-Loop World Models for Robot Learning
 
 date: 2026-11
+status: preprint
 meta: Preprints.org 2026
 authors:Hejia Geng, Junzhe Wang, Lingjun Cheng, Haoyu Wang, Lei Zhang, Junfan Zhu, Shao-Jun Xia, Aurora Yue Feng, Di Fan, Lili Yan, Zaibin Zhang, Xiu Yuan, Tingyu Zhang, Zihu Wang, Yifei Song, Haoran Yuan, Lingfeng Zhang, Junxiang Wang, Jiahan Li, Zihan Wang, Mi Zhou, Junjie Gao, Huanyu Li, Wenhan Cao, Jiankai Sun, Yue Huang, Xuewen Luo, Yuxuan Wang, Siyuan Song, Chong Cheng, Wentao Guo, Wei Chen, Suning Huang, Shuo Yang, Bin Hu, Huangyuan Su, Chirui Chang, Jingxiang Guo, Ruirui Zhong, Feiyang Song, Haoran Yuan, Zhe Cao, Xinzhe Chai, Donghang Wu, Shijie Wang, Wen Yang, Zhi Wang, Xiao Huang, Shuyi Wu, Qixiu Li, Qianzhong Chen, Pengliang Ji, Zixuan Zhang, Peisong Wen, Xinyuan Xia, Yifei Yu, Siran Dai, Yifan Jiang, Hanyang Yu, Xuechao Zhang, Yutong Wang, Chenfeng Tu, Jinnan Chen, Ziyuan Zhong, Xianxin Lai, Xiaohang Yu, Xiaoyuan Cheng, Zhuo Sun, Zhenyang Ni, Yingcheng Wu, Zhenfei Yin
 imageLabel: Prediction → Control
@@ -9,6 +10,7 @@ links: Paper|https://www.preprints.org/manuscript/202611.0078, Code|https://gith
 ## Stabilizing Language Models under Continual Learning via Condition-Anchored Distillation
 
 date: 2026-10
+status: preprint
 meta: arXiv 2026
 authors:Huan Li, Zhe Cao, Qinlei Xie, Fushun Cui, Xuechen Liang
 imageLabel: CAGD
@@ -17,6 +19,7 @@ links: Paper|https://arxiv.org/abs/2610.06940
 ## T2AV-Compass: Towards Unified Evaluation for Text-to-Audio-Video Generation
 
 date: 2026-09
+status: accepted
 meta: ICML 2026 · CVPR 2026 VGBE Oral
 authors:Zhe Cao*, Tao Wang*, Jiaming Wang*, Yanghai Wang*, Yuanxing Zhang, Jialu Chen, Miao Deng, Jiahao Wang, Yubin Guo, Chenxi Liao, Yize Zhang, Zhaoxiang Zhang, Jiaheng Liu
 image: /publications/previews/t2av-compass.png
@@ -26,6 +29,7 @@ links: Paper|https://proceedings.mlr.press/v306/cao26v.html, Code|https://github
 ## AVSCap: Orchestrating Audio-Visual Synergy for Omni-modal Video Captioning
 
 date: 2026-07
+status: accepted
 meta: EMNLP 2026 Main Conference
 authors:Yanghai Wang, Jiahao Wang, Jiafu Tang, Yuanxing Zhang, Zhe Cao, Hanyan Bian, Zijie Zhang, Weiliang Luo, Zhiyu Pan, Zixuan Dong, Jiaheng Liu, Zhaoxiang Zhang
 image: /publications/previews/avscap.png
@@ -35,6 +39,7 @@ links: Paper|https://arxiv.org/abs/2607.12820, Code|https://github.com/NJU-LINK/
 ## OmniHalluc-L: Counterfactual Benchmarking and Modality-Perturbation Reliability Calibration for Long-Form Omni Hallucination
 
 date: 2026-06
+status: accepted
 meta: EMNLP 2026
 authors:Zixuan Dong, Jiafu Tang, Zhide Lei, Zhe Cao, Zijie Zhang, Yanghai Wang, Shihao Li, Xiaodong Wang, Baoyun Peng, Jiaheng Liu
 image: /publications/previews/omnihalluc-l.png
@@ -44,6 +49,7 @@ links: Paper|https://arxiv.org/abs/2606.03614, Code (MPRC)|https://github.com/Ze
 ## Frontier-Eng: Benchmarking Self-Evolving Agents on Real-World Engineering Tasks with Generative Optimization
 
 date: 2026-04
+status: accepted
 meta: NeurIPS 2026
 authors:Yizhe Chi, Deyao Hong, Dapeng Jiang, Tianwei Luo, Kaisen Yang, Boshi Zhang, Zhe Cao, Xiaoyan Fan, Bingxiang He, Han Hao, Weiyang Jin, Dianqiao Lei, Qingle Liu, Houde Qian, Bowen Wang, Situ Wang, Youjie Zheng, Yifan Zhou, Calvin Xiao, Eren Cai, Qinhuai Na
 image: /publications/previews/frontier-eng.png
@@ -53,6 +59,7 @@ links: Paper|https://arxiv.org/abs/2604.12290, Code|https://github.com/Einsia/Fr
 ## The Latent Space: Foundation, Evolution, Mechanism, Ability, and Outlook
 
 date: 2026-04
+status: preprint
 meta: arXiv 2026
 authors:Xinlei Yu, Zhangquan Chen, Yongbo He, Tianyu Fu, Cheng Yang, Chengming Xu, Yue Ma, Xiaobin Hu, Zhe Cao, Jie Xu, Guibin Zhang, Jiale Tao, Jiayi Zhang, Siyuan Ma, Kaituo Feng, Haojie Huang, Youxing Li, Ronghao Chen, Huacan Wang, Chenglin Wu, Zikun Su, Xiaogang Xu, Kelu Yao, Kun Wang, Chen Gao, Yue Liao, Ruqi Huang, Tao Jin, Cheng Tan, Jiangning Zhang, Wenqi Ren, Yanwei Fu, Yong Liu, Yu Wang, Xiangyu Yue, Yu-Gang Jiang, Shuicheng Yan
 image: /publications/previews/latentspace.png
@@ -62,6 +69,7 @@ links: Paper|https://arxiv.org/abs/2604.02029, Collection|https://github.com/xly
 ## RoboRouter: Training-Free Policy Routing for Robotic Manipulation
 
 date: 2026-03
+status: preprint
 meta: arXiv 2026
 authors:Yiteng Chen, Zhe Cao, Hongjia Ren, Chenjie Yang, Wenbo Li, Shiyi Wang, Yemin Wang, Li Zhang, Yanming Shao, Zhenjun Zhao, Huiping Zhuang, Qingyao Wu
 image: /publications/previews/roborouter.png
@@ -71,6 +79,7 @@ links: Paper|https://arxiv.org/abs/2603.07892
 ## OmniVideoBench: Towards Audio-Visual Understanding Evaluation for Omni MLLMs
 
 date: 2025-10
+status: accepted
 meta: ICLR 2026
 authors:Caorui Li, Yu Chen, Yiyan Ji, Jin Xu, Zhenyu Cui, Shihao Li, Yuanxing Zhang, Wentao Wang, Zhenghao Song, Dingling Zhang, Ying He, Haoxiang Liu, Yuxuan Wang, Qiufeng Wang, Jiafu Tang, Zhenhe Wu, Jiehui Luo, Zhiyu Pan, Weihao Xie, Chenchen Zhang, Zhaohui Wang, Jiayi Tian, Yanghai Wang, Zhe Cao, Minxin Dai, Ke Wang, Runzhe Wen, Yinghao Ma, Yaning Pan, Sungkyun Chang, Termeh Taheri, Haiwen Xia, Christos Plachouras, Emmanouil Benetos, Yizhi Li, Ge Zhang, Jian Yang, Tianhao Peng, Zili Wang, Minghao Liu, Junran Peng, Zhaoxiang Zhang, Jiaheng Liu
 image: /publications/previews/omnivideobench.png
@@ -80,6 +89,7 @@ links: Paper|https://arxiv.org/abs/2510.10689, Code|https://github.com/NJU-LINK/
 ## SafeDialBench: A Fine-Grained Safety Evaluation Benchmark for Large Language Models in Multi-Turn Dialogues with Diverse Jailbreak Attacks
 
 date: 2025-02
+status: accepted
 meta: ICLR 2026
 authors:Hongye Cao, Sijia Jing, Yanming Wang, Ziyue Peng, Zhixin Bai, Zhe Cao, Meng Fang, Fan Feng, Boyan Wang, Jiaheng Liu, Tianpei Yang, Jing Huo, Yang Gao, Fanyu Meng, Xi Yang, Chao Deng, Junlan Feng
 image: /publications/previews/safedialbench.png

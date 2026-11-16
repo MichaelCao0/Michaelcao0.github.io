@@ -7,7 +7,6 @@
 
 ## Research Internships
 - 2026.9 - Present | Research Assistant, Shenzhen Loop Area Institute (FreedomAI, CUHK-Shenzhen) | Advisor: Prof. Benyou Wang · World models and multimodal spatial understanding.
-- 2026.1 - Present | Open-Source Research Project, Awesome Latent Space | Open-source survey and maintenance of latent-space research.
 - 2025.9 - 2026.1 | Research Intern, Tsinghua University NLP Group | Multi-agent systems and multi-model collaboration for deep research.
 - 2025.7 - 2026.6 | Research Intern, Link Lab, Nanjing University | Omni-modal video intelligence and evaluation.
 - 2024.8 - 2025.3 | Research Intern, Reasoning and Learning Group, Nanjing University | LLM safety and trustworthiness evaluation.

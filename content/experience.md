@@ -1,6 +1,6 @@
 ## Industry
 - 2026.4 - 2026.7 | Multimodal Algorithm Intern, Insta360 | Scene-aware shooting assistance, user-intent data, and VLM-based camera parameter recommendation.
-- 2026.1 - 2026.3 | Inference Deployment Intern, AgiBot | FP8/BF16 training and inference validation with Transformer Engine; reinforcement-learning policy deployment.
+- 2026.1 - 2026.4 | Inference Deployment Intern, AgiBot | FP8/BF16 training and inference validation with Transformer Engine; reinforcement-learning policy deployment.
 
 ## Education
 - 2023.9 - 2027.6 | B.S. in Computer Science and Technology, Nanjing University | Undergraduate education.

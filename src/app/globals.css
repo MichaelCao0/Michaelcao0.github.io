@@ -441,6 +441,34 @@ button {
     color: var(--ink);
   }
 
+  .metric-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.48rem;
+  }
+
+  .metric-card {
+    display: grid;
+    gap: 0.18rem;
+    border-top: 2px solid var(--accent);
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    padding: 0.72rem 0.78rem 0.68rem;
+  }
+
+  .metric-card strong {
+    font-family: var(--font-serif), serif;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: var(--ink-strong);
+  }
+
+  .metric-card span {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
   .interest-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -485,6 +513,41 @@ button {
     color: var(--ink);
   }
 
+  .timeline-list {
+    position: relative;
+    display: grid;
+  }
+
+  .timeline-list::before {
+    position: absolute;
+    top: 0.9rem;
+    bottom: 0.9rem;
+    left: 0.28rem;
+    width: 1px;
+    background: var(--line-strong);
+    content: "";
+  }
+
+  .timeline-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 0.9rem 5.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding: 0.78rem 0;
+  }
+
+  .timeline-marker {
+    z-index: 1;
+    width: 0.58rem;
+    height: 0.58rem;
+    border: 2px solid var(--bg);
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
   .experience-groups {
     display: grid;
     gap: 1.7rem;
@@ -522,6 +585,64 @@ button {
     font-size: 1.08rem;
     font-weight: 650;
     color: var(--ink-strong);
+  }
+
+  .featured-paper {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.42fr) minmax(0, 1fr);
+    gap: 1.35rem;
+    border: 1px solid var(--line-strong);
+    border-left: 3px solid var(--accent);
+    border-radius: 5px;
+    background: var(--panel);
+    padding: 1rem;
+    box-shadow: 0 18px 40px -30px var(--shadow);
+  }
+
+  .featured-paper-cover {
+    position: relative;
+    min-height: 142px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--panel-muted);
+  }
+
+  .featured-paper-body {
+    display: grid;
+    align-content: center;
+    gap: 0.52rem;
+  }
+
+  .featured-paper-kicker {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .featured-paper-title {
+    max-width: 38rem;
+    font-family: var(--font-serif), serif;
+    font-size: clamp(1.22rem, 2vw, 1.58rem);
+    line-height: 1.22;
+    color: var(--ink-strong);
+  }
+
+  .featured-paper-meta {
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .featured-paper-copy {
+    max-width: 40rem;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--ink);
   }
 
   .publication-card {
@@ -685,6 +806,7 @@ button {
 
   .visitor-map-shell {
     display: flex;
+    position: relative;
     min-height: 180px;
     align-items: center;
     justify-content: center;
@@ -696,6 +818,16 @@ button {
 
   .visitor-map-shell > * {
     max-width: 100%;
+  }
+
+  .visitor-map-link {
+    position: absolute;
+    right: 0.85rem;
+    bottom: 0.7rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+    color: var(--accent);
+    font-size: 0.74rem;
+    text-decoration: none;
   }
 }
 
@@ -717,9 +849,18 @@ button {
     align-items: baseline;
   }
 
+  .timeline-row {
+    grid-template-columns: 0.9rem 96px minmax(0, 1fr);
+    gap: 1.1rem;
+  }
+
   .publication-card {
     grid-template-columns: 124px minmax(0, 1fr);
     gap: 1.35rem;
+  }
+
+  .featured-paper {
+    grid-template-columns: 190px minmax(0, 1fr);
   }
 }
 
@@ -761,8 +902,27 @@ button {
     gap: 0.28rem;
   }
 
+  .metric-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .interest-list {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .timeline-row {
+    grid-template-columns: 0.9rem minmax(0, 1fr);
+    gap: 0.55rem;
+  }
+
+  .timeline-row .list-date {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .timeline-row .list-text {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .publication-card {
@@ -773,5 +933,9 @@ button {
 
   .publication-cover {
     width: min(100%, 13rem);
+  }
+
+  .featured-paper {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

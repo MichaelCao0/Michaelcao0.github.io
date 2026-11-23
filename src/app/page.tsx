@@ -150,12 +150,28 @@ function AuthorList({ authors }: { authors: string }) {
   );
 }
 
+function MetricStrip({ metrics }: { metrics: Array<{ value: string; label: string }> }) {
+  return (
+    <div className="metric-strip" aria-label="Research metrics">
+      {metrics.map((metric) => (
+        <div key={metric.label} className="metric-card">
+          <strong>{metric.value}</strong>
+          <span>{metric.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
   const publications = getPublications();
+  const acceptedPapers = publications.filter((item) => item.status === "accepted");
+  const preprints = publications.filter((item) => item.status === "preprint");
   const publicationGroups = [
-    { title: "Accepted Papers", items: publications.filter((item) => item.status === "accepted") },
-    { title: "Preprints", items: publications.filter((item) => item.status === "preprint") },
+    { title: "Accepted Papers", items: acceptedPapers },
+    { title: "Preprints", items: preprints },
   ];
+  const featuredPaper = publications.find((item) => item.title.startsWith("T2AV-Compass"));
 
   return (
     <div className="site-page">
@@ -218,6 +234,13 @@ export default function Home() {
             <section id="about" className="content-section scroll-mt-24">
               <SectionHeading kicker="About" title="Research Profile" />
               <p className="intro-copy">{intro}</p>
+              <MetricStrip
+                metrics={[
+                  { value: String(publications.length), label: "publications" },
+                  { value: String(acceptedPapers.length), label: "accepted papers" },
+                  { value: String(interests.length), label: "research themes" },
+                ]}
+              />
               <div className="interest-list" aria-label="Research interests">
                 {interests.map((item) => (
                   <span key={item} className="interest-item">
@@ -229,9 +252,10 @@ export default function Home() {
 
             <section id="news" className="content-section scroll-mt-24">
               <SectionHeading kicker="News" title="Recent Updates" />
-              <div className="list-block">
+              <div className="timeline-list">
                 {news.map((item) => (
-                  <article key={`${item.date}-${item.text}`} className="list-row">
+                  <article key={`${item.date}-${item.text}`} className="timeline-row">
+                    <div className="timeline-marker" aria-hidden="true" />
                     <p className="list-date">{item.date}</p>
                     <p className="list-text">{item.text}</p>
                   </article>
@@ -241,6 +265,28 @@ export default function Home() {
 
             <section id="publications" className="content-section scroll-mt-24">
               <SectionHeading kicker="Selected Publications" title="Papers and Projects" />
+              {featuredPaper ? (
+                <article className="featured-paper">
+                  <div className="featured-paper-cover">
+                    {featuredPaper.image ? (
+                      <Image src={featuredPaper.image} alt={`${featuredPaper.title} cover`} fill sizes="(max-width: 720px) 100vw, 230px" className="object-contain p-3" />
+                    ) : null}
+                  </div>
+                  <div className="featured-paper-body">
+                    <p className="featured-paper-kicker">Featured paper</p>
+                    <h3 className="featured-paper-title">{featuredPaper.title}</h3>
+                    <p className="featured-paper-meta">{featuredPaper.meta}</p>
+                    <p className="featured-paper-copy">A unified benchmark for evaluating audio-visual generation, instruction following, realism, and cross-modal consistency.</p>
+                    <div className="publication-links">
+                      {featuredPaper.links.map((link) => (
+                        <a key={link.label} href={link.href} target="_blank" rel="noreferrer" className="publication-link">
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ) : null}
               <div className="publication-groups">
                 {publicationGroups.map((group) => (
                   <div key={group.title} className="publication-group">
@@ -331,6 +377,9 @@ export default function Home() {
                   src="https://mapmyvisitors.com/map.js?d=IpOmOWxy0-p38X7mgCkXV16LIhDdgDn3uNLOmqsC4CM&cl=ffffff&w=a"
                   strategy="afterInteractive"
                 />
+                <a className="visitor-map-link" href="https://mapmyvisitors.com/web/1c9iu" target="_blank" rel="noreferrer">
+                  View visitor details
+                </a>
               </div>
             </section>
           </div>

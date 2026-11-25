@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="15" fill="#234839" />
+  <rect x="3" y="3" width="58" height="58" rx="12" stroke="#8ec5ab" stroke-opacity="0.28" stroke-width="1.5" />
+  <text
+    x="32"
+    y="40.5"
+    text-anchor="middle"
+    fill="#f7f5ee"
+    font-family="Georgia, 'Palatino Linotype', serif"
+    font-size="26"
+    font-weight="600"
+    letter-spacing="-0.5"
+  >
+    ZC
+  </text>
+</svg>

@@ -1,9 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-import Script from "next/script";
-
+import { CopyEmailButton } from "@/components/copy-email-button";
+import { InterestGrid } from "@/components/interest-grid";
+import { PublicationsSection } from "@/components/publications-section";
+import { ResearchCopilot } from "@/components/research-copilot";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { experienceGroups, getPublications, intro, interests, navigation, news, profile, profileLinks } from "@/data/site";
+import { TopbarNav } from "@/components/topbar-nav";
+import { VisitorMap } from "@/components/visitor-map";
+import {
+  experienceGroups,
+  getPublications,
+  interests,
+  intro,
+  navigation,
+  news,
+  preface,
+  profile,
+  profileLinks,
+} from "@/data/site";
 
 type IconName =
   | "mail"
@@ -18,20 +30,47 @@ type IconName =
 function SectionHeading({
   kicker,
   title,
+  meta,
 }: {
   kicker: string;
   title: string;
+  meta?: string;
 }) {
   return (
     <div className="section-heading">
-      <p className="section-kicker">{kicker}</p>
-      <h2 className="section-title">{title}</h2>
+      <div>
+        <p className="section-kicker">{kicker}</p>
+        <h2 className="section-title">{title}</h2>
+      </div>
+      {meta ? <p className="section-meta">{meta}</p> : null}
     </div>
   );
 }
 
+function RichInlineText({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
+
+  return (
+    <>
+      {parts.map((part, idx) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return <strong key={idx}>{part.slice(2, -2)}</strong>;
+        }
+        if (part.startsWith("*") && part.endsWith("*")) {
+          return (
+            <em key={idx} className="news-paper-title">
+              {part.slice(1, -1)}
+            </em>
+          );
+        }
+        return <span key={idx}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 function LinkIcon({ name }: { name: IconName }) {
-  const common = "h-[18px] w-[18px] stroke-[1.6] text-[var(--ink-strong)]";
+  const common = "h-[17px] w-[17px] stroke-[1.65]";
 
   switch (name) {
     case "mail":
@@ -99,64 +138,18 @@ function LinkIcon({ name }: { name: IconName }) {
   }
 }
 
-function getVenueTone(label: string) {
-  const normalized = label.toLowerCase();
-
-  if (normalized.includes("iclr")) return "iclr";
-  if (normalized.includes("icml")) return "icml";
-  if (normalized.includes("cvpr")) return "cvpr";
-  if (normalized.includes("acl")) return "acl";
-  if (normalized.includes("arxiv")) return "arxiv";
-
-  return "default";
-}
-
-function AuthorList({ authors }: { authors: string }) {
-  const name = profile.name;
-  const names = authors
-    .split(",")
-    .map((author) => author.trim())
-    .filter(Boolean);
-  const isLongList = names.length > 8;
-  const firstAuthors = isLongList ? names.slice(0, 3) : names;
-  const hasProfileAuthor = names.some((author) => author.startsWith(name));
-  const profileAuthor = names.find((author) => author.startsWith(name));
-  const displayAuthors = isLongList
-    ? [
-        ...firstAuthors,
-        ...(profileAuthor && !firstAuthors.some((author) => author.startsWith(name)) ? ["…", profileAuthor] : []),
-        ...(!hasProfileAuthor ? ["…"] : []),
-      ]
-    : firstAuthors;
-
+function MetricStrip({
+  metrics,
+}: {
+  metrics: Array<{ value: string; label: string; detail: string }>;
+}) {
   return (
-    <>
-      {displayAuthors.map((author, index) => (
-        <span key={`${author}-${index}`}>
-          {author === "…" ? (
-            author
-          ) : author.startsWith(name) ? (
-            <>
-              <strong>{name}</strong>
-              {author.slice(name.length)}
-            </>
-          ) : (
-            author
-          )}
-          {index < displayAuthors.length - 1 ? ", " : null}
-        </span>
-      ))}
-    </>
-  );
-}
-
-function MetricStrip({ metrics }: { metrics: Array<{ value: string; label: string }> }) {
-  return (
-    <div className="metric-strip" aria-label="Research metrics">
+    <div className="metric-strip" aria-label="Research highlights">
       {metrics.map((metric) => (
         <div key={metric.label} className="metric-card">
-          <strong>{metric.value}</strong>
-          <span>{metric.label}</span>
+          <strong className="metric-value">{metric.value}</strong>
+          <span className="metric-label">{metric.label}</span>
+          <span className="metric-detail">{metric.detail}</span>
         </div>
       ))}
     </div>
@@ -166,177 +159,182 @@ function MetricStrip({ metrics }: { metrics: Array<{ value: string; label: strin
 export default function Home() {
   const publications = getPublications();
   const acceptedPapers = publications.filter((item) => item.status === "accepted");
-  const preprints = publications.filter((item) => item.status === "preprint");
-  const publicationGroups = [
-    { title: "Accepted Papers", items: acceptedPapers },
-    { title: "Preprints", items: preprints },
-  ];
-  const featuredPaper = publications.find((item) => item.title.startsWith("T2AV-Compass"));
+  const emailItem = profileLinks.find((item) => item.href?.startsWith("mailto:"));
+  const emailAddress = emailItem?.href?.replace(/^mailto:/, "") ?? "";
+  const topicCounts = publications.reduce<Record<string, number>>((acc, item) => {
+    acc[item.topic] = (acc[item.topic] ?? 0) + 1;
+    return acc;
+  }, {});
+  const newsYears = Array.from(
+    new Set(news.map((item) => item.date.slice(0, 4)).filter((y) => /^\d{4}$/.test(y))),
+  ).sort();
+  const newsMeta =
+    newsYears.length > 1
+      ? `${newsYears[0]}–${newsYears[newsYears.length - 1]} Timeline`
+      : newsYears.length === 1
+        ? `${newsYears[0]} Timeline`
+        : undefined;
 
   return (
-    <div className="site-page">
+    <div id="top" className="site-page">
       <header className="topbar">
         <div className="topbar-inner">
-          <div className="topbar-brand">
-            <span className="topbar-name">{profile.name}</span>
-            <span className="topbar-role">academic homepage</span>
+          <a href="#top" className="topbar-brand">
+            <span className="topbar-monogram" aria-hidden="true">
+              ZC
+            </span>
+            <span className="topbar-brand-text">
+              <span className="topbar-name">{profile.name}</span>
+              <span className="topbar-role">{profile.affiliation}</span>
+            </span>
+          </a>
+
+          <TopbarNav items={navigation} />
+
+          <div className="topbar-theme">
+            <ThemeToggle />
           </div>
-          <nav className="topbar-nav">
-            {navigation.map((item) => (
-              <Link key={item.href} href={item.href} className="topbar-link">
-                {item.label}
-              </Link>
-            ))}
-          </nav>
         </div>
       </header>
-
-      <div className="theme-floating">
-        <ThemeToggle />
-      </div>
 
       <main className="site-shell">
         <div className="academic-layout">
           <aside className="sidebar-column">
-            <div className="profile-block">
-              <h1 className="profile-name">{profile.name}</h1>
-              <p className="profile-role">
-                {profile.role}, {profile.affiliation}
-              </p>
-              <p className="profile-line">{profile.line}</p>
-            </div>
+            <div className="sidebar-card">
+              <div className="profile-block">
+                <span className="affiliation-pill">
+                  <span className="affiliation-dot" aria-hidden="true" />
+                  {profile.affiliation}
+                </span>
+                <h1 className="profile-name">{profile.name}</h1>
+                <p className="profile-role">{profile.role} · Computer Science</p>
+                <p className="profile-line">{profile.line}</p>
+              </div>
 
-            <div className="link-stack">
-              {profileLinks.map((item) =>
-                item.active && item.href ? (
-                  <a key={item.label} href={item.href} className="icon-link" target={item.href.startsWith("http") ? "_blank" : undefined} rel={item.href.startsWith("http") ? "noreferrer" : undefined}>
-                    <span className="icon-shell">
-                      <LinkIcon name={item.icon as IconName} />
-                    </span>
-                    <span>{item.label}</span>
-                  </a>
-                ) : (
-                  <div key={item.label} className="icon-link is-muted" aria-disabled="true">
-                    <span className="icon-shell">
-                      <LinkIcon name={item.icon as IconName} />
-                    </span>
-                    <span>{item.label}</span>
-                    <span className="profile-link-hint">add link</span>
-                  </div>
-                ),
-              )}
-            </div>
+              <div className="link-stack">
+                {profileLinks.map((item) => {
+                  const isMail = Boolean(item.href?.startsWith("mailto:"));
 
-            <p className="profile-note">{profile.note}</p>
+                  if (item.active && item.href) {
+                    return (
+                      <div key={item.label} className="icon-link-row">
+                        <a
+                          href={item.href}
+                          className="icon-link"
+                          target={item.href.startsWith("http") ? "_blank" : undefined}
+                          rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                        >
+                          <span className="icon-shell">
+                            <LinkIcon name={item.icon as IconName} />
+                          </span>
+                          <span className="icon-link-label">{item.label}</span>
+                          {item.href.startsWith("http") ? (
+                            <span className="link-arrow" aria-hidden="true">
+                              ↗
+                            </span>
+                          ) : null}
+                        </a>
+                        {isMail && emailAddress ? <CopyEmailButton email={emailAddress} /> : null}
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div key={item.label} className="icon-link is-muted" aria-disabled="true">
+                      <span className="icon-shell">
+                        <LinkIcon name={item.icon as IconName} />
+                      </span>
+                      <span className="icon-link-label">{item.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {profile.note ? <p className="profile-note">{profile.note}</p> : null}
+            </div>
           </aside>
 
           <div className="content-column">
-            <section id="about" className="content-section scroll-mt-24">
-              <SectionHeading kicker="About" title="Research Profile" />
-              <p className="intro-copy">{intro}</p>
+            <section id="about" className="content-section hero-section">
+              <div className="preface-banner">
+                <p className="preface-eyebrow">{preface.eyebrow}</p>
+                {preface.title ? <h2 className="preface-title">{preface.title}</h2> : null}
+                {preface.text ? <p className="preface-lead">{preface.text}</p> : null}
+                <div className="preface-divider" aria-hidden="true" />
+                <p className="intro-copy">{intro}</p>
+              </div>
+
               <MetricStrip
                 metrics={[
-                  { value: String(publications.length), label: "publications" },
-                  { value: String(acceptedPapers.length), label: "accepted papers" },
-                  { value: String(interests.length), label: "research themes" },
+                  {
+                    value: String(publications.length),
+                    label: "Selected Works",
+                    detail: `${acceptedPapers.length} peer-reviewed · ${publications.length - acceptedPapers.length} preprints`,
+                  },
+                  {
+                    value: "5",
+                    label: "Major Venues",
+                    detail: "ICML · NeurIPS · ICLR · EMNLP · CVPR",
+                  },
+                  {
+                    value: "Oral",
+                    label: "Oral Highlight",
+                    detail: "T2AV-Compass · CVPR 2026 VGBE",
+                  },
                 ]}
               />
-              <div className="interest-list" aria-label="Research interests">
-                {interests.map((item) => (
-                  <span key={item} className="interest-item">
-                    {item}
-                  </span>
-                ))}
-              </div>
+
+              <InterestGrid items={interests} topicCounts={topicCounts} />
+
+              <ResearchCopilot
+                publications={publications}
+                experienceGroups={experienceGroups}
+                profileName={profile.name}
+              />
             </section>
 
-            <section id="news" className="content-section scroll-mt-24">
-              <SectionHeading kicker="News" title="Recent Updates" />
+            <section id="news" className="content-section">
+              <SectionHeading kicker="News" title="Recent Updates" meta={newsMeta} />
               <div className="timeline-list">
-                {news.map((item) => (
-                  <article key={`${item.date}-${item.text}`} className="timeline-row">
+                {news.map((item, idx) => (
+                  <article key={`${item.date}-${item.text}`} className={`timeline-row ${idx === 0 ? "is-latest" : ""}`}>
                     <div className="timeline-marker" aria-hidden="true" />
                     <p className="list-date">{item.date}</p>
-                    <p className="list-text">{item.text}</p>
+                    <p className="list-text">
+                      <RichInlineText text={item.text} />
+                    </p>
                   </article>
                 ))}
               </div>
             </section>
 
-            <section id="publications" className="content-section scroll-mt-24">
-              <SectionHeading kicker="Selected Publications" title="Papers and Projects" />
-              {featuredPaper ? (
-                <article className="featured-paper">
-                  <div className="featured-paper-cover">
-                    {featuredPaper.image ? (
-                      <Image src={featuredPaper.image} alt={`${featuredPaper.title} cover`} fill sizes="(max-width: 720px) 100vw, 230px" className="object-contain p-3" />
-                    ) : null}
-                  </div>
-                  <div className="featured-paper-body">
-                    <p className="featured-paper-kicker">Featured paper</p>
-                    <h3 className="featured-paper-title">{featuredPaper.title}</h3>
-                    <p className="featured-paper-meta">{featuredPaper.meta}</p>
-                    <p className="featured-paper-copy">A unified benchmark for evaluating audio-visual generation, instruction following, realism, and cross-modal consistency.</p>
-                    <div className="publication-links">
-                      {featuredPaper.links.map((link) => (
-                        <a key={link.label} href={link.href} target="_blank" rel="noreferrer" className="publication-link">
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              ) : null}
-              <div className="publication-groups">
-                {publicationGroups.map((group) => (
-                  <div key={group.title} className="publication-group">
-                    <h3 className="publication-group-title">{group.title}</h3>
-                    <div className="publication-stack">
-                      {group.items.map((item) => {
-                        const venue = item.meta || (item.links.some((link) => link.label.toLowerCase().includes("arxiv")) ? "arXiv" : "");
+            <section id="publications" className="content-section">
+              <SectionHeading
+                kicker="Selected Publications"
+                title="Papers and Projects"
+                meta="* equal contribution · click figures to zoom"
+              />
+              <PublicationsSection publications={publications} profileName={profile.name} />
+            </section>
 
+            <section id="experience" className="content-section">
+              <SectionHeading kicker="Experience" title="Education, Research & Industry" />
+              <div className="experience-groups">
+                {experienceGroups.map((group) => (
+                  <div key={group.title} className="experience-group">
+                    <h3 className="experience-group-title">{group.title}</h3>
+                    <div className="experience-cards">
+                      {group.items.map((item) => {
+                        const isPresent = item.date.toLowerCase().includes("present");
                         return (
-                          <article key={item.title} className="publication-card">
-                            <div className="publication-cover">
-                              {item.image ? (
-                                <Image
-                                  src={item.image}
-                                  alt={`${item.title} cover`}
-                                  fill
-                                  sizes="(max-width: 1024px) 120px, 140px"
-                                  className={item.imageFit === "contain" ? "object-contain p-2" : "object-cover object-center"}
-                                />
-                              ) : (
-                                <div className="publication-fallback">
-                                  <span>{item.imageLabel}</span>
-                                </div>
-                              )}
+                          <article key={`${item.date}-${item.title}`} className="experience-row">
+                            <div className="experience-date-col">
+                              <span className="list-date">{item.date}</span>
+                              {isPresent ? <span className="present-pill">Current</span> : null}
                             </div>
-                            <div className="publication-body">
-                              <h2 className="publication-title">{item.title}</h2>
-                              {item.authors ? (
-                                <p className="publication-authors">
-                                  <AuthorList authors={item.authors} />
-                                </p>
-                              ) : null}
-                              {item.note ? <p className="publication-note">{item.note}</p> : null}
-                              {venue || item.links.length ? (
-                                <div className="publication-links">
-                                  {venue ? <span className={`publication-venue publication-venue--${getVenueTone(venue)}`}>{venue}</span> : null}
-                                  {item.links.map((link) => (
-                                    <a
-                                      key={link.label}
-                                      href={link.href}
-                                      target={link.href.startsWith("http") && link.href !== "#" ? "_blank" : undefined}
-                                      rel={link.href.startsWith("http") && link.href !== "#" ? "noreferrer" : undefined}
-                                      className={`publication-link ${link.href === "#" ? "is-disabled" : ""}`}
-                                      aria-disabled={link.href === "#"}
-                                    >
-                                      {link.label}
-                                    </a>
-                                  ))}
-                                </div>
-                              ) : null}
+                            <div className="experience-main">
+                              <h4 className="experience-title">{item.title}</h4>
+                              <p className="list-text">{item.text}</p>
                             </div>
                           </article>
                         );
@@ -347,41 +345,19 @@ export default function Home() {
               </div>
             </section>
 
-            <section id="experience" className="content-section scroll-mt-24">
-              <SectionHeading kicker="Experience" title="Industry, Education, and Research" />
-              <div className="experience-groups">
-                {experienceGroups.map((group) => (
-                  <div key={group.title} className="experience-group">
-                    <h3 className="experience-group-title">{group.title}</h3>
-                    <div className="list-block">
-                      {group.items.map((item) => (
-                        <article key={`${item.date}-${item.title}`} className="list-row">
-                          <p className="list-date">{item.date}</p>
-                          <div>
-                            <h4 className="experience-title">{item.title}</h4>
-                            <p className="list-text">{item.text}</p>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <section id="visitors" className="content-section">
+              <SectionHeading kicker="Visitors" title="Global Readership" />
+              <VisitorMap />
             </section>
 
-            <section id="visitors" className="content-section scroll-mt-24">
-              <SectionHeading kicker="Visitors" title="Visitor Map" />
-              <div className="visitor-map-shell">
-                <Script
-                  id="mapmyvisitors"
-                  src="https://mapmyvisitors.com/map.js?d=IpOmOWxy0-p38X7mgCkXV16LIhDdgDn3uNLOmqsC4CM&cl=ffffff&w=a"
-                  strategy="afterInteractive"
-                />
-                <a className="visitor-map-link" href="https://mapmyvisitors.com/web/1c9iu" target="_blank" rel="noreferrer">
-                  View visitor details
-                </a>
-              </div>
-            </section>
+            <footer className="site-footer">
+              <p className="footer-copy">
+                © {new Date().getFullYear()} {profile.name} · {profile.affiliation}
+              </p>
+              <a href="#top" className="back-to-top">
+                Back to top ↑
+              </a>
+            </footer>
           </div>
         </div>
       </main>

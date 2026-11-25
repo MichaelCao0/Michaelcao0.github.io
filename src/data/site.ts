@@ -1,38 +1,50 @@
 import fs from "node:fs";
 import path from "node:path";
 
-type LinkItem = {
+export type LinkItem = {
   label: string;
   href?: string;
   icon: string;
   active: boolean;
 };
 
-type PublicationLink = {
+export type PublicationLink = {
   label: string;
   href: string;
 };
 
-type Publication = {
+export type Publication = {
+  id: string;
+  shortTitle: string;
   title: string;
   date: string;
   status: "accepted" | "preprint";
+  featured: boolean;
+  topic: string;
   meta: string;
+  venues: string[];
   authors: string;
   note: string;
   image?: string;
   imageLabel?: string;
   imageFit?: "cover" | "contain";
   links: PublicationLink[];
+  bibtex: string;
 };
 
-type Experience = {
+export type InterestItem = {
+  title: string;
+  detail: string;
+  raw: string;
+};
+
+export type Experience = {
   date: string;
   title: string;
   text: string;
 };
 
-type ExperienceGroup = {
+export type ExperienceGroup = {
   title: string;
   items: Experience[];
 };
@@ -102,30 +114,150 @@ function parseLinks(value = "") {
     .filter((item): item is PublicationLink => Boolean(item.label && item.href));
 }
 
+const BIB_STOP_WORDS = new Set([
+  "a",
+  "an",
+  "and",
+  "for",
+  "from",
+  "in",
+  "of",
+  "on",
+  "the",
+  "to",
+  "towards",
+  "toward",
+  "under",
+  "via",
+  "with",
+]);
+
+function extractShortTitle(title: string) {
+  const colonIdx = title.indexOf(":");
+  if (colonIdx > 0 && colonIdx <= 42) {
+    return title.slice(0, colonIdx).trim();
+  }
+  const words = title.trim().split(/\s+/);
+  return words.length <= 5 ? title.trim() : `${words.slice(0, 5).join(" ")}…`;
+}
+
+function slugifyTitle(title: string) {
+  const prefix = title.includes(":") ? title.slice(0, title.indexOf(":")) : title.split(/\s+/).slice(0, 5).join(" ");
+  const slug = prefix
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return slug || "paper";
+}
+
+function buildBibtex({
+  title,
+  authors,
+  date,
+  status,
+  meta,
+  links,
+  usedKeys,
+}: {
+  title: string;
+  authors: string;
+  date: string;
+  status: "accepted" | "preprint";
+  meta: string;
+  links: PublicationLink[];
+  usedKeys: Set<string>;
+}) {
+  const cleanAuthors = authors
+    .split(",")
+    .map((name) => name.replace(/[*†‡]/g, "").trim())
+    .filter(Boolean);
+
+  const firstAuthorParts = (cleanAuthors[0] ?? "author").split(/\s+/);
+  const lastName = (firstAuthorParts[firstAuthorParts.length - 1] ?? "author").toLowerCase().replace(/[^a-z0-9]/g, "") || "author";
+  const yearMatch = meta.match(/\b(20\d{2})\b/) ?? date.match(/^(\d{4})/);
+  const year = yearMatch?.[1] ?? "2026";
+  const titleWords = title
+    .split(/[:\s-]+/)
+    .map((word) => word.toLowerCase().replace(/[^a-z0-9]/g, ""))
+    .filter(Boolean);
+  const keyword = titleWords.find((word) => !BIB_STOP_WORDS.has(word)) ?? titleWords[0] ?? "paper";
+
+  let citeKey = `${lastName}${year}${keyword}`;
+  let suffix = 2;
+  while (usedKeys.has(citeKey)) {
+    citeKey = `${lastName}${year}${keyword}${suffix}`;
+    suffix += 1;
+  }
+  usedKeys.add(citeKey);
+
+  const primaryVenue = meta.split("·")[0]?.trim() || "arXiv preprint";
+  const paperUrl = links.find((link) => link.label.toLowerCase().includes("paper"))?.href ?? links[0]?.href ?? "";
+  const entryType = status === "accepted" ? "inproceedings" : "article";
+  const venueField = status === "accepted" ? `  booktitle = {${primaryVenue}},` : `  journal   = {${primaryVenue}},`;
+  const urlField = paperUrl ? `\n  url       = {${paperUrl}},` : "";
+
+  return `@${entryType}{${citeKey},
+  title     = {${title}},
+  author    = {${cleanAuthors.join(" and ")}},
+${venueField}
+  year      = {${year}},${urlField}
+}`;
+}
+
 function parsePublications(markdown: string): Publication[] {
+  const usedIds = new Set<string>();
+  const usedKeys = new Set<string>();
+
   return markdown
     .split(/^## /m)
     .slice(1)
     .map((block) => {
       const [title = "", ...body] = block.trim().split("\n");
       const fields = parseFields(body.join("\n"));
+      const cleanTitle = title.trim();
+      const baseSlug = slugifyTitle(cleanTitle);
+      let id = baseSlug;
+      let idSuffix = 2;
+      while (usedIds.has(id)) {
+        id = `${baseSlug}-${idSuffix}`;
+        idSuffix += 1;
+      }
+      usedIds.add(id);
+
+      const status: "accepted" | "preprint" = fields.status === "accepted" ? "accepted" : "preprint";
+      const meta = fields.meta ?? "";
+      const venues = meta
+        .split("·")
+        .map((part) => part.trim())
+        .filter(Boolean);
+      const links = parseLinks(fields.links);
+      const authors = fields.authors ?? "";
+      const date = fields.date ?? "";
 
       return {
-        title: title.trim(),
-        date: fields.date ?? "",
-        status: fields.status === "accepted" ? "accepted" : "preprint",
-        meta: fields.meta ?? "",
-        authors: fields.authors ?? "",
+        id,
+        shortTitle: fields.imageLabel?.trim() || extractShortTitle(cleanTitle),
+        title: cleanTitle,
+        date,
+        status,
+        featured: fields.featured === "true",
+        topic: fields.topic ?? "General",
+        meta,
+        venues,
+        authors,
         note: fields.note ?? "",
         image: fields.image,
         imageLabel: fields.imageLabel,
         imageFit: fields.imageFit === "cover" ? "cover" : "contain",
-        links: parseLinks(fields.links),
+        links,
+        bibtex: buildBibtex({ title: cleanTitle, authors, date, status, meta, links, usedKeys }),
       };
     });
 }
 
 const profileFields = parseFields(homeMarkdown.split("## Preface")[0]);
+const prefaceFields = parseFields(getSection(homeMarkdown, "Preface"));
+
 export const navigation = [
   { label: "About", href: "#about" },
   { label: "News", href: "#news" },
@@ -142,6 +274,12 @@ export const profile = {
   note: profileFields.note ?? "",
 };
 
+export const preface = {
+  eyebrow: prefaceFields.eyebrow ?? "Academic Portfolio",
+  title: prefaceFields.title ?? "",
+  text: prefaceFields.text ?? "",
+};
+
 export const profileLinks: LinkItem[] = parsePipeList(getSection(homeMarkdown, "Links")).map(([label, href, icon, state]) => ({
   label,
   href,
@@ -151,7 +289,17 @@ export const profileLinks: LinkItem[] = parsePipeList(getSection(homeMarkdown, "
 
 export const intro = getSection(homeMarkdown, "About");
 
-export const interests = parseSimpleList(getSection(homeMarkdown, "Research Interests"));
+export const interests: InterestItem[] = parseSimpleList(getSection(homeMarkdown, "Research Interests")).map((raw) => {
+  const separatorIndex = raw.indexOf("·");
+  if (separatorIndex === -1) {
+    return { title: raw, detail: "", raw };
+  }
+  return {
+    title: raw.slice(0, separatorIndex).trim(),
+    detail: raw.slice(separatorIndex + 1).trim(),
+    raw,
+  };
+});
 
 export const news = parsePipeList(newsMarkdown).map(([date, text]) => ({ date, text }));
 
